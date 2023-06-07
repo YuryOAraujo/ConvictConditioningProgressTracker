@@ -26,7 +26,7 @@ Obtain the necessary credentials:
 - Rename the JSON file to credentials.json and place it in the same directory as the program.
 
 ## Usage
-Run the program or open the progress_tracker.exe:
+Run the program:
 
 ```shell
 python progress_tracker.py
