@@ -32,18 +32,26 @@ def get_current_date():
     return now.strftime("%d/%m/%Y")
 
 def get_reps(reps):
-    return reps if len(reps.split(' ')) == 1 else 'L' + reps.split(' ')[0] + ' R' + reps.split(' ')[1]
+    reps = reps.split(' ')
+    return reps[0] if len(reps) == 1 else 'L' + reps[0] + ' R' + reps[1]
 
 def get_weight(weight):
     return ' +17kg' if weight == True else ''
 
 def clear_input():
     for key in values:
-        window[key]('')
+        if key not in ['WeightWarmup', 'WeightSet1', 'WeightSet2']:
+            window[key]('')
     return None
 
+def get_program(exercise):
+    if exercise in ['Pullups', 'Squats', 'Bridges']:
+        return 'A'
+    else:
+        return 'B'
+
 def processData():
-    row['program'] = values['Program']
+    row['program'] = get_program(values['Name'])
     row['exercise'] = values['Name']
     row['warmup'] = f"{values['StepWarmup']}{get_weight(values['WeightWarmup'])}: {get_reps(values['RepWarmup'])}"
     row['set1'] = f"{values['StepSet1']}{get_weight(values['WeightSet1'])}: {get_reps(values['RepSet1'])}"
@@ -68,7 +76,7 @@ row = {
 
 layout = [
     [sg.Text('Please fill out the following fields:')],
-    [sg.Text('Program:', size=(6, 1)), sg.Combo(program, key='Program'), sg.Text('Exercise:', size=(6, 1)), sg.Combo(exercises, key='Name')],
+    [sg.Text('Exercise:', size=(6, 1)), sg.Combo(exercises, key='Name')],
     [sg.Text('Warmup:', size=(6, 1)), sg.Combo(steps, key='StepWarmup'), sg.Text('Reps'), sg.InputText(key='RepWarmup', size=(10, 1)), sg.Checkbox('Weighted', key='WeightWarmup')],
     [sg.Text('Set 1:', size=(6, 1)), sg.Combo(steps, key='StepSet1'), sg.Text('Reps'), sg.InputText(key='RepSet1', size=(10, 1)), sg.Checkbox('Weighted', key='WeightSet1', default=True)],
     [sg.Text('Set 2:', size=(6, 1)), sg.Combo(steps, key='StepSet2'), sg.Text('Reps'), sg.InputText(key='RepSet2', size=(10, 1)), sg.Checkbox('Weighted', key='WeightSet2', default=True)],
